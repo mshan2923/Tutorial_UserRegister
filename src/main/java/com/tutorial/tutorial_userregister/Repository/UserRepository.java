@@ -10,5 +10,5 @@ import java.util.Optional;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
     //List<Users> findFirst2ByUsernameLikeOrderByIDDesc(String name);//정렬된 리스트(?)
-    Optional<User> findByUserid(String user_id);//엔티티의 파라미터 써야 되는데 대소문자 구분이 안됨!!
+    Optional<User> findByUserid(String userid);//엔티티의 파라미터 써야 되는데 대소문자 구분이 안됨!!
 }

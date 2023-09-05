@@ -1,5 +1,6 @@
 package com.tutorial.tutorial_userregister.Config;
 
+
 import com.tutorial.tutorial_userregister.Entity.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -8,16 +9,15 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.Collections;
 
-
 public class UserDetail implements UserDetails {
 
-    private String id;
-    private String password;
+    private String userid;
+    private String pw;
     private String auth;
 
     public UserDetail(User user) {
-        this.id = user.getUserid();
-        this.password = user.getPw();
+        this.userid = user.getUserid();
+        this.pw = user.getPw();
         this.auth = "ROLE_" + user.getUserAuth();
     }
 
@@ -28,12 +28,12 @@ public class UserDetail implements UserDetails {
 
     @Override
     public String getPassword() {
-        return this.password;
+        return this.pw;
     }
 
     @Override
     public String getUsername() {
-        return this.id;
+        return this.userid;
     }
 
     @Override

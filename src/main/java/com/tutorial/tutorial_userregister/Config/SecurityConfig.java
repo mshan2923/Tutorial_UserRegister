@@ -2,6 +2,7 @@ package com.tutorial.tutorial_userregister.Config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -45,12 +46,13 @@ public class SecurityConfig {
                                 .loginPage("/login/login")
                                 .usernameParameter("userid")
                                 .passwordParameter("password")
-                                .loginProcessingUrl("/login/login-process")//서비스로직으로 연결 (유효성 검사 등)
-                                .defaultSuccessUrl("/",true)
+                                .loginProcessingUrl("/login-process")//서비스로직으로 연결 (유효성 검사 등)
+                                .defaultSuccessUrl("/login/dashboard",true)
                                 .failureUrl("/login/fail")
+                                .permitAll()
                 )
-                .logout(logout -> logout.logoutUrl("/login/logout"))
-                .userDetailsService(userDetailsService(passwordEncoder()));
+                .logout(Customizer.withDefaults());
+                //.userDetailsService(userDetailsService(passwordEncoder()));
         return http.build();
     }
 
@@ -62,7 +64,9 @@ public class SecurityConfig {
 
     //잡다한 실수 -> RequestBody 안씀 , static 으로 하면 빈 등록 안됨 final을 써야지
 
-    //======================= 로그인 여부 무시 하는중
+    //======================= 로그인 시 항상 실패
+    
+    
     @Bean
     public PasswordEncoder passwordEncoder() {
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();

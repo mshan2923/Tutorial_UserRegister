@@ -1,10 +1,13 @@
 package com.tutorial.tutorial_userregister.Controller;
 
+import com.tutorial.tutorial_userregister.Config.UserDetail;
 import com.tutorial.tutorial_userregister.Dto.UserRequestDto;
 import com.tutorial.tutorial_userregister.Service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -28,9 +31,10 @@ public class UserController {
     {
         //return "redirect:/Register";
         System.out.println("login Page");
-        return "dashboard";
+        return "login";
     }
 
+    /*
     @PostMapping("/login/login")
     public String OnLogin(@RequestBody UserRequestDto data)
     {
@@ -39,12 +43,13 @@ public class UserController {
     }//loginProcessingUrl으로 값을 넘겨 로그인 처리
     //----------NotWork - 도중에 넘어가는듯?
 
+
     @GetMapping("/login/logout")
     public String logoutPage()
     {
         System.out.println("LogOut");
         return "login";
-    }
+    }*/
 
     /**
      * 회원가입 폼
@@ -69,6 +74,7 @@ public class UserController {
         userService.joinUser(userRequestDto);
         return "redirect:/login"; //로그인 구현 예정
     }
+    /*
     @PostMapping("/login/login-process")
     public String login(@RequestBody UserRequestDto dto) {
         boolean isValidMember = userService.isVailMember(dto.getUserid(), dto.getPw());
@@ -77,10 +83,18 @@ public class UserController {
             return "dashboard";
         return "login";
     }//================== 이거 중심으로 파기 왜 작동 안함?
+    */
     @GetMapping("/login/fail")
     public String LoginFail()
     {
         System.out.println("LoginFail");
-        return "LoginFail";
+        return "index";
+    }
+
+    @GetMapping("/login/dashboard")
+    public String dashboardPage(@AuthenticationPrincipal UserDetail user, Model module) {
+        module.addAttribute("login_id", user.getUsername());
+        System.out.println("--======-> " + user.getUsername() + " / " + user.getPassword());
+        return "dashboard";
     }
 }
