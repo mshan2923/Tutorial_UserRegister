@@ -18,6 +18,8 @@ public class SecurityConfig {
 
     @Bean
     public InMemoryUserDetailsManager userDetailsService(PasswordEncoder passwordEncoder) {
+        System.out.println("userDetailsService");
+
         UserDetails user = User.withUsername("user")
                 .password(passwordEncoder.encode("password"))
                 .roles("USER")
@@ -43,28 +45,36 @@ public class SecurityConfig {
                                 .loginPage("/login/login")
                                 .usernameParameter("userid")
                                 .passwordParameter("password")
-                                .loginProcessingUrl("/login/login-process")
+                                .loginProcessingUrl("/login/login-process")//서비스로직으로 연결 (유효성 검사 등)
                                 .defaultSuccessUrl("/",true)
                                 .failureUrl("/login/fail")
                 )
-                //.logout(logout -> logout.in)
+                .logout(logout -> logout.logoutUrl("/login/logout"))
                 .userDetailsService(userDetailsService(passwordEncoder()));
         return http.build();
     }
 
     // ============ 회원가입 하니까 로그인 페이지로 감---> Html 메소드 주소 잘못되어서 / 회원 가입 데이터 전송 주소 수정!!!
-    //===================== 왜 지랄 이였는지 분석
+    //===================== 왜 문제 이였는지 분석
     //=======회원 가입 할때 (SignUp ) UserRequestDto 가 null값 줌
 
     //리다이렉션이 너무 많을때 -> 무한 루프 완성! , 해당 주소 api가 없어서
 
     //잡다한 실수 -> RequestBody 안씀 , static 으로 하면 빈 등록 안됨 final을 써야지
 
+    //======================= 로그인 여부 무시 하는중
     @Bean
     public PasswordEncoder passwordEncoder() {
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
-    /*
+
+    //public DaoAuthenticationProvider daoAuthenticationProvider() throws Exception
+    {
+
+    }
+
+    {
+            /*
     @Bean
     protected SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception
     {
@@ -122,6 +132,8 @@ public class SecurityConfig {
                 .and()
                 .logout()
                 .permitAll();*///legacy
+    }
+
 
 
 }

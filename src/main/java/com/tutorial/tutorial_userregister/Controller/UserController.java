@@ -22,24 +22,27 @@ public class UserController {
         System.out.println("Start Page");
         return "login";
     }
+
     @GetMapping("/login/login")
     public String loginPage()
     {
         //return "redirect:/Register";
         System.out.println("login Page");
-        return "login";
+        return "dashboard";
     }
 
     @PostMapping("/login/login")
     public String OnLogin(@RequestBody UserRequestDto data)
     {
-        System.out.println(data.getUserid() + "/ " + data.getPw());
-        return "";
+        System.out.println("-----------> " + data.getUserid() + "/ " + data.getPw());
+        return "dashboard";
     }//loginProcessingUrl으로 값을 넘겨 로그인 처리
+    //----------NotWork - 도중에 넘어가는듯?
 
     @GetMapping("/login/logout")
     public String logoutPage()
     {
+        System.out.println("LogOut");
         return "login";
     }
 
@@ -73,7 +76,7 @@ public class UserController {
         if (isValidMember)
             return "dashboard";
         return "login";
-    }
+    }//================== 이거 중심으로 파기 왜 작동 안함?
     @GetMapping("/login/fail")
     public String LoginFail()
     {

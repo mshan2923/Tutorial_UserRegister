@@ -17,6 +17,7 @@ public class UserDetailsService  implements org.springframework.security.core.us
         User user = userRepository.findByUserid(username)
                 .orElseThrow(() ->
                 {return new UsernameNotFoundException("해당 유저를 찾을수 없습니다.");});
+        System.out.println("userDetails");
         return new UserDetail(user);
-    }
+    }//작동 안함
 }
